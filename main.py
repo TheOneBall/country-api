@@ -14,13 +14,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Root endpoint (Render health check)
+# ✅ Root route for Render health check
 @app.get("/")
 def home():
     return {"message": "✅ Country Outline API is running successfully!"}
 
-
-# Main API endpoint
+# ✅ Actual API route
 @app.get("/api/outline", response_class=PlainTextResponse)
 async def get_outline(country: str):
     if not country:
