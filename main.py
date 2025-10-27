@@ -14,13 +14,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Root endpoint (Render health check)
+@app.get("/")
+def home():
+    return {"message": "✅ Country Outline API is running successfully!"}
+
+
+# Main API endpoint
 @app.get("/api/outline", response_class=PlainTextResponse)
 async def get_outline(country: str):
     if not country:
         raise HTTPException(status_code=400, detail="Missing country name")
-    
+
     url = f"https://en.wikipedia.org/wiki/{country.strip().replace(' ', '_')}"
-    
+
     try:
         response = httpx.get(url)
     except Exception:
