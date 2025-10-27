@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GlobalEdu API CORS Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+        pre { background: #f4f4f4; padding: 15px; border-radius: 5px; }
+        .success { color: green; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>GlobalEdu API CORS Test</h1>
+    
+    <label for="countryInput">Enter country name:</label>
+    <input type="text" id="countryInput" value="Vanuatu" style="padding: 8px; width: 200px;">
+    <button onclick="fetchOutline()">Get Outline</button>
+    
+    <div id="status"></div>
+    <pre id="result"></pre>
+
+    <script>
+        async function fetchOutline() {
+            const country = document.getElementById('countryInput').value;
+            const statusDiv = document.getElementById('status');
+            const resultDiv = document.getElementById('result');
+            
+            statusDiv.innerHTML = 'Fetching...';
+            resultDiv.textContent = '';
+            
+            try {
+                const response = await fetch(`http://localhost:8000/api/outline?country=${encodeURIComponent(country)}`);
+                
+                if (response.ok) {
+                    const text = await response.text();
+                    statusDiv.innerHTML = '<span class="success">✅ CORS Working! Data fetched successfully.</span>';
+                    resultDiv.textContent = text;
+                } else {
+                    statusDiv.innerHTML = `<span class="error">❌ Error: ${response.status} ${response.statusText}</span>`;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `<span class="error">❌ Error: ${error.message}</span>`;
+            }
+        }
+    </script>
+</body>
+</html>
